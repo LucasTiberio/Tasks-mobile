@@ -36,7 +36,21 @@ export const TaskList = styled.View`
 
 export const ToggleDone = styled.View`
   align-items: flex-end;
-  margin-right: 25px;
+  margin-right: 26px;
   margin-bottom: 10px;
-  padding: 10px;
+`;
+
+export const CreateTaskButton = styled.TouchableOpacity`
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+
+  height: 60px;
+  width: 60px;
+  border-radius: 30px;
+
+  justify-content: center;
+  align-items: center;
+
+  background: ${(props) => props.theme.Colors.today};
 `;

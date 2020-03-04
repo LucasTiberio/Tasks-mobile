@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import 'moment/locale/pt-br';
-import { FlatList, Platform, TouchableOpacity } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import CreateTask from '../CreateTask';
 import Task from '../../components/Task';
 import * as S from './style';
 import todayImage from '../../../assets/imgs/today.jpg';
@@ -15,11 +16,14 @@ class TaskList extends Component {
 
     this.handleToggleTask = this.handleToggleTask.bind(this);
     this.handleShowNonDoneTasks = this.handleShowNonDoneTasks.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.handleOpenModal = this.handleOpenModal.bind(this);
   }
 
   // eslint-disable-next-line react/state-in-constructor
   state = {
     onlyNonDone: false,
+    createTaskIsVisible: false,
     taskList: [
       {
         id: Math.random(),
@@ -60,16 +64,25 @@ class TaskList extends Component {
     this.setState({ taskList: newTaskList });
   }
 
+  handleCloseModal() {
+    this.setState({ createTaskIsVisible: false });
+  }
+
+  handleOpenModal() {
+    this.setState({ createTaskIsVisible: true });
+  }
+
   render() {
     const today = moment().locale('pt-br').format('ddd, D [de] MMMM');
     let { taskList } = this.state;
-    const { onlyNonDone } = this.state;
+    const { onlyNonDone, createTaskIsVisible } = this.state;
     if (onlyNonDone) {
       taskList = taskList.filter((task) => task.doneAt == null);
     }
 
     return (
       <S.Container>
+        <CreateTask isVisible={createTaskIsVisible} onCancel={this.handleCloseModal} />
 
         <S.Header source={todayImage}>
           <S.HeaderInfo>
@@ -90,6 +103,10 @@ class TaskList extends Component {
             renderItem={({ item }) => <Task handleClick={this.handleToggleTask} data={item} />}
           />
         </S.TaskList>
+
+        <S.CreateTaskButton activeOpacity={0.85} onPress={this.handleOpenModal}>
+          <Icon name="plus" size={25} color="#fff" />
+        </S.CreateTaskButton>
 
       </S.Container>
     );
