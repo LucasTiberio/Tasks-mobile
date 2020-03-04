@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Modal, TouchableWithoutFeedback, TouchableOpacity, Platform, View, Text,
+  Modal, TouchableWithoutFeedback, TouchableOpacity, Platform, View,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -55,8 +55,8 @@ class CreateTask extends Component {
   }
 
   render() {
-    const { onCancel, isVisible } = this.props;
-    const { description } = this.state;
+    const { onCancel, isVisible, createTask } = this.props;
+    const { description, date } = this.state;
 
     return (
       <Modal transparent visible={isVisible} onRequestClose={onCancel} animationType="fade">
@@ -80,7 +80,7 @@ class CreateTask extends Component {
               <S.ButtonText>Cancelar</S.ButtonText>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => createTask(description, date)}>
               <S.ButtonText>Salvar</S.ButtonText>
             </TouchableOpacity>
 

@@ -18,6 +18,7 @@ class TaskList extends Component {
     this.handleShowNonDoneTasks = this.handleShowNonDoneTasks.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.createTask = this.createTask.bind(this);
   }
 
   // eslint-disable-next-line react/state-in-constructor
@@ -72,6 +73,19 @@ class TaskList extends Component {
     this.setState({ createTaskIsVisible: true });
   }
 
+  createTask(description, date) {
+    const { taskList } = this.state;
+    const newTaskList = [
+      ...taskList,
+      {
+        id: Math.random(),
+        description,
+        estimateAt: date,
+      },
+    ];
+    this.setState({ taskList: newTaskList, createTaskIsVisible: false });
+  }
+
   render() {
     const today = moment().locale('pt-br').format('ddd, D [de] MMMM');
     let { taskList } = this.state;
@@ -82,7 +96,11 @@ class TaskList extends Component {
 
     return (
       <S.Container>
-        <CreateTask isVisible={createTaskIsVisible} onCancel={this.handleCloseModal} />
+        <CreateTask
+          isVisible={createTaskIsVisible}
+          createTask={this.createTask}
+          onCancel={this.handleCloseModal}
+        />
 
         <S.Header source={todayImage}>
           <S.HeaderInfo>
