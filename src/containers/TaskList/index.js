@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import 'moment/locale/pt-br';
-import { FlatList } from 'react-native';
+import { FlatList, Platform, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Task from '../../components/Task';
 import * as S from './style';
@@ -13,10 +14,12 @@ class TaskList extends Component {
     super(props);
 
     this.handleToggleTask = this.handleToggleTask.bind(this);
+    this.handleShowNonDoneTasks = this.handleShowNonDoneTasks.bind(this);
   }
 
   // eslint-disable-next-line react/state-in-constructor
   state = {
+    onlyNonDone: false,
     taskList: [
       {
         id: Math.random(),
@@ -37,6 +40,11 @@ class TaskList extends Component {
     ],
   };
 
+  handleShowNonDoneTasks() {
+    const { onlyNonDone } = this.state;
+    this.setState({ onlyNonDone: !onlyNonDone }, this.handleToggleTask());
+  }
+
   handleToggleTask(taskId) {
     const { taskList } = this.state;
     const newTaskList = taskList;
@@ -54,13 +62,22 @@ class TaskList extends Component {
 
   render() {
     const today = moment().locale('pt-br').format('ddd, D [de] MMMM');
-    const { taskList } = this.state;
+    let { taskList } = this.state;
+    const { onlyNonDone } = this.state;
+    if (onlyNonDone) {
+      taskList = taskList.filter((task) => task.doneAt == null);
+    }
 
     return (
       <S.Container>
 
         <S.Header source={todayImage}>
           <S.HeaderInfo>
+            <S.ToggleDone>
+              <TouchableOpacity onPress={this.handleShowNonDoneTasks}>
+                <Icon name={onlyNonDone ? 'eye-slash' : 'eye'} size={25} color="#fff" />
+              </TouchableOpacity>
+            </S.ToggleDone>
             <S.HeaderTitle>Hoje</S.HeaderTitle>
             <S.HeaderSubtitle>{today}</S.HeaderSubtitle>
           </S.HeaderInfo>

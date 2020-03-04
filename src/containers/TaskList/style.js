@@ -33,3 +33,10 @@ export const HeaderSubtitle = styled(HeaderDefault)`
 export const TaskList = styled.View`
   flex: 7;
 `;
+
+export const ToggleDone = styled.View`
+  align-items: flex-end;
+  margin-right: 25px;
+  margin-bottom: 10px;
+  padding: 10px;
+`;
